@@ -15,8 +15,12 @@ class Kele
                 email: u
             }
         }
-        
-        pp self.class.post(@base_url + '/sessions', info)
+        @auth_token = self.class.post(@base_url + '/sessions', info)
+    end
+    
+    def get_me
+        response = self.class.get(@base_url + '/sessions', headers: { "Authorization" => @auth_token })
+        JSON.parse response.body
     end
 
 end
