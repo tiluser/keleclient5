@@ -8,7 +8,7 @@ class Kele
     include Roadmap
     
     base_uri "https://www.bloc.io/api/v1"
-    
+
     def initialize(u, p)
         
         info = {
@@ -42,17 +42,33 @@ class Kele
         JSON.parse response.body
     end
     
-    def get_roadmap(roadmap_id)
-        url = self.class.base_uri + "/roadmaps/" + roadmap_id.to_s
+    def get_messages(*args)
+        url = self.class.base_uri + "/message_threads"
         response = self.class.get(url, headers: { "Authorization" => @auth_token })
-        JSON.parse response.body
+        body = JSON.parse response.body 
+        messages = body["items"]
+        if args[0] == nil
+            messages
+        else
+            message_id = args[0]
+            messages[message_id]
+        end
     end
     
-    def get_checkpoint(checkpoint_id)
-        url = self.class.base_uri + "/checkpoints/" + checkpoint_id.to_s
-        response = self.class.get(url, headers: { "Authorization" => @auth_token })
-        JSON.parse response.body
+    def create_message(sender, recipient_id, token, subject, text)
+        url = self.class.base_uri + "/message"
+        info = {
+            body: {
+                "sender": sender,
+                "recipient_id": recipient_id,
+                "token": token,  
+                "subject": subject,
+                "stripped-text": "Thats what they call a half pounder in Japan."
+            }
+        }
+    
+        response = self.class.post(url, info)
+        
     end
-
-
+    
 end
