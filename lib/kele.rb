@@ -18,6 +18,9 @@ class Kele
         @sessions_url = self.class.base_uri + "/sessions"
         @response = self.class.post(@sessions_url, info)
         @auth_token = @response.parsed_response['auth_token']
+        if @auth_token == nil
+            puts "Error: invalid credentials"
+        end
     end
     
     def show_auth
@@ -25,7 +28,8 @@ class Kele
     end
     
     def get_me
-        response = self.class.get(base_uri + '/sessions', headers: { "Authorization" => @auth_token })
+        url = self.class.base_uri + "/users/me"
+        response = self.class.get(url, headers: { "Authorization" => @auth_token })
         JSON.parse response.body
     end
     
