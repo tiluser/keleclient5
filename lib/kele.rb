@@ -33,8 +33,10 @@ class Kele
         JSON.parse response.body
     end
     
-    def self.shorten(website_url)
-       post('/api/links.json', query: { link: { website_url: website_url } })
+    def get_mentor_availability(mentor_id)
+        url = self.class.base_uri + "/mentors/" + mentor_id.to_s + "/student_availability"
+        response = self.class.get(url, headers: { "Authorization" => @auth_token })
+        JSON.parse response.body
     end
 
 end
