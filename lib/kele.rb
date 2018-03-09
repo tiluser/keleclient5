@@ -63,7 +63,25 @@ class Kele
                 "recipient_id": recipient_id,
                 "token": token,  
                 "subject": subject,
-                "stripped-text": "Thats what they call a half pounder in Japan."
+                "stripped-text": text
+            }
+        }
+    
+        response = self.class.post(url, info)
+        
+    end
+    
+    def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment)
+        url = self.class.base_uri + "/checkpoint_submissions"
+        gm_info = get_me
+        
+        info = {
+            body: { 
+                "assignment_branch": assignment_branch,
+                "assignment_commit_link": assignment_commit_link,
+                "checkpoint_id": checkpoint_id,  
+                "comment": comment,
+                "enrollment_id": ["id"]
             }
         }
     
